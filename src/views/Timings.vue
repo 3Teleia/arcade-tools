@@ -153,7 +153,7 @@ export default {
       // creates all the timing line objects and sets their times
       for (let i = 0; i <= this.steps; i++) {
         this.timings_list[i] = {
-          time: Math.round(this.start_time + time_step * i)
+          time: Math.round(Number(this.start_time) + Number(time_step) * i)
         };
       }
       // fail-safe
