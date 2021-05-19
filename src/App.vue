@@ -19,7 +19,7 @@ export default {
   data: () => {
     return {
       links: [
-        { text: "Timings", route: "/timing" },
+        { text: "Eased timings", route: "/timing" },
         { text: "Credits", route: "/credits" }
       ]
     };
