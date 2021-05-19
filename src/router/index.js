@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: "/timing",
-    name: "Timings",
+    name: "Eased timings",
     component: Timings
   },
   {
