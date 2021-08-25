@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Timings from "../views/Timings.vue";
 import Credits from "../views/Credits.vue";
+import SplitArcs from "../views/SplitArcs";
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,11 @@ const routes = [
     name: "Eased timings",
     component: Timings
   },
+  {
+    path: "/splitarcs",
+    name: "Split arcs",
+    component: SplitArcs
+    },
   {
     path: "/credits",
     name: "Credits",

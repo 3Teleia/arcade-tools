@@ -20,6 +20,7 @@ export default {
     return {
       links: [
         { text: "Eased timings", route: "/timing" },
+        { text: "Split arcs", route: "/splitarcs" },
         { text: "Credits", route: "/credits" }
       ]
     };
