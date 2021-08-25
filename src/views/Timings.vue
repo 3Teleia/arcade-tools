@@ -122,7 +122,7 @@
         </v-sparkline>
       </v-col>
       <v-col cols="7">
-        <v-textarea v-if="resulting_list" v-model="resulting_list"></v-textarea>
+        <v-textarea v-if="resulting_list" v-model="resulting_list" label="Output"></v-textarea>
 
         <v-btn
           block
@@ -134,7 +134,7 @@
         >
           Copy list to clipboard
         </v-btn>
-        <v-snackbar v-model="snackbar" :timeout="timeout">
+        <v-snackbar v-model="snackbar" timeout="2000">
           Copied timings to clipboard!
         </v-snackbar>
       </v-col>
@@ -150,7 +150,6 @@ export default {
 
   data: () => ({
     snackbar: null,
-    timeout: 2000, // timeout in ms for the snackbar
     loading: null,
     start_time: 0,
     end_time: 1000,
@@ -183,7 +182,7 @@ export default {
   }),
   methods: {
     create_timing_list: function() {
-      if (!this.curve_type) this.curve_type = this.curve_type_list[0]; // sets curve to s if not set because haha no validation
+      if (!this.curve_type) this.curve_type = this.curve_type_list[0]; // sets curve to s if not set
       this.resulting_list = "";
       this.timings_list = [];
       this.bpm_list = [];
