@@ -102,7 +102,10 @@ export default {
     segments: 4,
     ease_type_x: "",
     ease_type_y: "",
-    input: "",
+    input:
+      "arc(0,10000,0.90,0.10,siso,0.00,0.50,0,none,false);\n" +
+      "arc(5000,12345,0.00,0.80,sisi,1.00,0.50,1,none,false);\n" +
+      "arc(7500,12228,0.10,0.35,sosi,0.50,1.00,0,none,false);",
     arcs_separated: null,
     use_additional: null,
     ignore_traces: null,
@@ -132,11 +135,16 @@ export default {
       this.resulting_list = "";
       let arcs = this.input.split("\n");
       for (let i = 0; i < arcs.length; i++) {
-        if (arcs[i]) {
+        if (arcs[i].length > 30) {
           arcs[i] = arcs[i].substring(4, arcs[i].length - 2);
           arcs[i] = arcs[i].split(","); // arcs = [[start,end,x1,x2,ease,y1,y2,colour,none,trace],[...],...];
+          while (isNaN(parseInt(arcs[i][0].charAt(0)))) {
+            arcs[i][0] = arcs[i][0].substring(1);
+            console.log(arcs[i][0]);
+          }
         } else {
           arcs.splice(i, 1);
+          i -= 1;
         }
       }
       console.log(arcs);
