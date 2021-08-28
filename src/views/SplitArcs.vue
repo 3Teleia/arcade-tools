@@ -140,14 +140,12 @@ export default {
           arcs[i] = arcs[i].split(","); // arcs = [[start,end,x1,x2,ease,y1,y2,colour,none,trace],[...],...];
           while (isNaN(parseInt(arcs[i][0].charAt(0)))) {
             arcs[i][0] = arcs[i][0].substring(1);
-            console.log(arcs[i][0]);
           }
         } else {
           arcs.splice(i, 1);
           i -= 1;
         }
       }
-      console.log(arcs);
       for (let i = 0; i < arcs.length; i++) {
         console.log(`Splitting arc #${i} (${arcs[i]})`);
         if (this.ignore_traces && arcs[i][9] === "true") {
