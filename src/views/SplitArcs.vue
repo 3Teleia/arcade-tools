@@ -211,6 +211,7 @@ export default {
     },
     get_fractions(ease) {
       let fractions = [];
+      ease = ease.toLowerCase();
       if (ease === "s" || ease === "b" || ease === "si" || ease === "so") {
         for (let i = 0; i <= this.segments; i++) {
           fractions.push(i / this.segments);
