@@ -42,6 +42,10 @@
             label="Use custom easings"
           ></v-checkbox>
           <v-checkbox
+            v-model="height_lines"
+            label="Force every segment to have a height line"
+          ></v-checkbox>
+          <v-checkbox
             v-model="ignore_traces"
             label="Ignore traces"
           ></v-checkbox>
@@ -110,6 +114,7 @@ export default {
     use_additional: null,
     ignore_traces: null,
     output_ignored_traces: null,
+    height_lines: null,
     additional_type_list: [
       "S",
       "B",
@@ -177,18 +182,8 @@ export default {
           let fractions_x = this.get_fractions(this.ease_type_x);
           let fractions_y = this.get_fractions(this.ease_type_y);
 
-          let x_coords = this.get_coords(
-            fractions_x,
-            arc[2],
-            arc[3],
-            this.ease_type_x
-          );
-          let y_coords = this.get_coords(
-            fractions_y,
-            arc[5],
-            arc[6],
-            this.ease_type_y
-          );
+          let x_coords = this.get_coords(fractions_x, arc[2], arc[3], "x");
+          let y_coords = this.get_coords(fractions_y, arc[5], arc[6], "y");
           for (let j = 0; j < this.segments; j++) {
             if (this.ignore_traces && arcs[i][9] === "true") {
               console.log("Passing ignored trace.");
@@ -222,8 +217,9 @@ export default {
       }
       return fractions;
     },
-    get_coords(fractions, start, end, ease) {
+    get_coords(fractions, start, end, axis) {
       let coords = [];
+      let ease = axis === "x" ? this.ease_type_x : this.ease_type_y;
       switch (ease) {
         case "s":
           for (let i = 0; i <= this.segments; i++) {
@@ -273,6 +269,17 @@ export default {
             coords.push(calc_coord.toFixed(2));
           }
           break;
+      }
+
+      if (axis === "y" && this.height_lines) {
+        for (let i = 1; i < coords.length; i++) {
+          if (coords[i] === coords[i - 1] && coords[i] === "0.00") {
+            coords[i] = "0.01";
+          } else if (coords[i] === coords[i - 1]) {
+            coords[i] = parseFloat(coords[i]) - 0.01;
+            coords[i] = coords[i].toFixed(2);
+          }
+        }
       }
       return coords;
     },
