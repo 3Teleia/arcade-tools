@@ -162,7 +162,7 @@ export default {
           }
         } else {
           let arc = arcs[i];
-          let time_step = Math.round((arc[1] - arc[0]) / this.segments);
+          let time_step = (arc[1] - arc[0]) / this.segments;
           if (!this.use_additional) {
             let ease_length = arc[4].length;
             switch (ease_length) {
@@ -185,20 +185,22 @@ export default {
           let x_coords = this.get_coords(fractions_x, arc[2], arc[3], "x");
           let y_coords = this.get_coords(fractions_y, arc[5], arc[6], "y");
           for (let j = 0; j < this.segments; j++) {
+            let start = Math.round(Number(arc[0]) + time_step * j);
+            let end = Math.round(Number(arc[0]) + time_step * (j + 1));
             if (this.ignore_traces && arcs[i][9] === "true") {
               console.log("Passing ignored trace.");
             } else if ((j + 1) % 2 === 0 && this.arcs_separated) {
               // eslint-disable-next-line prettier/prettier
               this.resulting_list +=
-                `arc(${Number(arc[0]) + time_step * j},${Number(arc[0]) + time_step * (j + 1)},${x_coords[j]},${x_coords[j + 1]},s,${y_coords[j]},${y_coords[j + 1]},${arc[7]},none,true);\n`;
+                `arc(${start},${end},${x_coords[j]},${x_coords[j + 1]},s,${y_coords[j]},${y_coords[j + 1]},${arc[7]},none,true);\n`;
             } else if (j === this.segments - 1) {
               // eslint-disable-next-line prettier/prettier
               this.resulting_list +=
-                `arc(${Number(arc[0]) + time_step * j},${Number(arc[1])},${x_coords[j]},${x_coords[j + 1]},s,${y_coords[j]},${y_coords[j + 1]},${arc[7]},none,${arc[9]});\n`;
+                `arc(${start},${Number(arc[1])},${x_coords[j]},${x_coords[j + 1]},s,${y_coords[j]},${y_coords[j + 1]},${arc[7]},none,${arc[9]});\n`;
             } else {
               // eslint-disable-next-line prettier/prettier
               this.resulting_list +=
-                `arc(${Number(arc[0]) + time_step * j},${Number(arc[0]) + time_step * (j + 1)},${x_coords[j]},${x_coords[j + 1]},s,${y_coords[j]},${y_coords[j + 1]},${arc[7]},none,${arc[9]});\n`;
+                `arc(${start},${end},${x_coords[j]},${x_coords[j + 1]},s,${y_coords[j]},${y_coords[j + 1]},${arc[7]},none,${arc[9]});\n`;
             }
           }
         }
