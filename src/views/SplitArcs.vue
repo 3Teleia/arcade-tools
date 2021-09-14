@@ -120,14 +120,20 @@ export default {
       "B",
       "Si",
       "So",
-      "linear",
-      "quadratic",
-      "cubic",
-      "quartic",
-      "quintic",
-      "sinusoidal",
-      "exponential",
-      "circular"
+      "quadratic-in",
+      "cubic-in",
+      "quartic-in",
+      "quintic-in",
+      "sinusoidal-in",
+      "exponential-in",
+      "circular-in",
+      "quadratic-out",
+      "cubic-out",
+      "quartic-out",
+      "quintic-out",
+      "sinusoidal-out",
+      "exponential-out",
+      "circular-out"
     ],
     number_rules: [
       v => !!v || "Value is required",
@@ -214,8 +220,15 @@ export default {
           fractions.push(i / this.segments);
         }
       } else {
+        let ease_split = ease.split("-");
         let segments = Number(this.segments) + 1;
-        fractions = Easing(segments, ease);
+        fractions = Easing(segments, ease_split[0]);
+        if (ease_split[1] === "in") {
+          fractions.reverse();
+          for (let i = 0; i < fractions.length; i++) {
+            fractions[i] = 1 - fractions[i];
+          }
+        }
       }
       return fractions;
     },
