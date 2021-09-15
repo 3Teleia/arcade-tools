@@ -71,33 +71,27 @@
             v-if="!use_additional"
             dense
             menu-props="top"
-            label="Select curve type"
-            :items="curve_type_list"
-            v-model="curve_type"
+            label="Select easing type"
+            :items="ease_type_list"
+            v-model="ease_type"
           ></v-overflow-btn>
-
           <v-overflow-btn
             v-if="use_additional"
             dense
             menu-props="top"
-            label="Select curve type"
+            label="Select easing type"
             :items="additional_type_list"
-            v-model="curve_type"
+            v-model="ease_type"
           ></v-overflow-btn>
 
-          <v-checkbox
-            v-model="use_additional"
-            label="Use additional easings?"
-          ></v-checkbox>
           <v-checkbox
             v-if="use_additional"
             v-model="additional_endToEnd"
             label="End to end (makes the end BPM act as the highest BPM value)"
           ></v-checkbox>
           <v-checkbox
-            v-if="use_additional"
-            v-model="additional_invert"
-            label="Invert"
+            v-model="use_additional"
+            label="Use additional easings?"
           ></v-checkbox>
 
           <v-btn
@@ -122,8 +116,11 @@
         </v-sparkline>
       </v-col>
       <v-col cols="7">
-        <v-textarea v-if="resulting_list" v-model="resulting_list" label="Output"></v-textarea>
-
+        <v-textarea
+          v-if="resulting_list"
+          v-model="resulting_list"
+          label="Output"
+        ></v-textarea>
         <v-btn
           block
           depressed
@@ -157,18 +154,24 @@ export default {
     beat_div: 4,
     start_bpm: 100,
     end_bpm: 200,
-    curve_type: "", // selected curve type
-    curve_type_list: ["S", "B", "Si", "So"],
+    ease_type: "", // selected easing type
+    ease_type_list: ["S", "B", "Si", "So"],
     use_additional: null,
     additional_type_list: [
-      "linear",
-      "quadratic",
-      "cubic",
-      "quartic",
-      "quintic",
-      "sinusoidal",
-      "exponential",
-      "circular"
+      "quadratic-in",
+      "cubic-in",
+      "quartic-in",
+      "quintic-in",
+      "sinusoidal-in",
+      "exponential-in",
+      "circular-in",
+      "quadratic-out",
+      "cubic-out",
+      "quartic-out",
+      "quintic-out",
+      "sinusoidal-out",
+      "exponential-out",
+      "circular-out"
     ],
     additional_endToEnd: null,
     additional_invert: null,
@@ -182,7 +185,7 @@ export default {
   }),
   methods: {
     create_timing_list: function() {
-      if (!this.curve_type) this.curve_type = this.curve_type_list[0]; // sets curve to s if not set
+      if (!this.ease_type) this.ease_type = this.ease_type_list[0]; // sets curve to s if not set
       this.resulting_list = "";
       this.timings_list = [];
       this.bpm_list = [];
@@ -205,17 +208,25 @@ export default {
 
       if (this.use_additional) {
         let steps = Number(this.steps) + 1;
-        fractions_list = Easing(steps, this.curve_type, {
+        let ease_split = this.ease_type.split("-");
+        fractions_list = Easing(steps, ease_split[0], {
           invert: this.additional_invert,
           endToEnd: this.additional_endToEnd
         });
+
+        if (ease_split[1] === "in") {
+          fractions_list.reverse();
+          for (let i = 0; i < fractions_list.length; i++) {
+            fractions_list[i] = 1 - fractions_list[i];
+          }
+        }
       } else {
         for (let i = 0; i <= this.steps; i++) {
           fractions_list.push(i / this.steps);
         }
       }
 
-      switch (this.curve_type) {
+      switch (this.ease_type) {
         case "S":
           for (let i = 0; i <= this.steps; i++) {
             let fraction = fractions_list[i];
