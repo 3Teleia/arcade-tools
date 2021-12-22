@@ -143,6 +143,7 @@ export default {
   }),
   methods: {
     split_arcs() {
+      this.loading = true;
       this.resulting_list = "";
       let arcs = this.input.split("\n");
       for (let i = 0; i < arcs.length; i++) {
@@ -211,6 +212,7 @@ export default {
           }
         }
       }
+      this.loading = false;
     },
     get_fractions(ease) {
       let fractions = [];
