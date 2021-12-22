@@ -21,6 +21,8 @@ export default {
       links: [
         { text: "Eased timings", route: "/timing" },
         { text: "Split arcs", route: "/splitarcs" },
+        { text: ".arc -> .aff", route: "/arctoaff" },
+        { text: ".aff -> .arc", route: "/afftoarc" },
         { text: "Credits", route: "/credits" }
       ]
     };
